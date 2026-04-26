@@ -1,0 +1,200 @@
+# Kadeio Web Design System
+### Built by Kadeio
+
+---
+
+## About Kadeio
+
+Every project built under the **Kadeio** banner carries a standard footer credit:
+```
+Built by Kadeio
+```
+This must appear on every deliverable — HTML files, Figma components, and Webflow builds.
+
+---
+
+## Tech Stack
+
+| Tool | Purpose |
+|------|---------|
+| **Figma** | UI Design & Component Library |
+| **Relume** | Wireframing & Layout Scaffolding |
+| **Webflow** | Production Build & CMS |
+| **GitHub** | Version Control & Figma HTML Import |
+
+HTML code is delivered ready to be pushed to GitHub and imported directly into Figma.
+
+---
+
+## Project Kickoff Protocol
+
+When starting any **new project**, Claude must ask the following before writing a single line of code:
+
+### Required Kickoff Questions
+
+1. **What's the vibe?**
+   - Examples: clean & minimal, dark & editorial, bold & expressive, luxury, playful, brutalist, futuristic, organic/earthy, retro, etc.
+
+2. **Any visual inspo?**
+   - Drop URLs, screenshots, Dribbble/Behance links, or describe references
+   - Mood boards, brand colors, or competitor sites are all welcome
+
+3. **Website type?** *(if not already clear)*
+   - Landing page, SaaS product, portfolio, e-commerce, agency, etc.
+
+4. **Brand assets available?**
+   - Logo, fonts, color palette, imagery? Or designing from scratch?
+
+> Claude will not proceed to design or code until at least questions 1 and 2 are answered.
+
+---
+
+## Redesign Workflow
+
+### When a Website Inspiration is Dropped:
+
+1. **Analyze** the dropped site — layout structure, hierarchy, color, typography, motion, tone
+2. **Identify** what works and what to improve
+3. **Ask vibe + inspo** if not already provided
+4. **Redesign** — do not replicate. Reimagine it with a distinct Kadeio aesthetic
+5. **Deliver clean HTML/CSS/JS** structured for Figma import via GitHub
+
+---
+
+## HTML Delivery Standards
+
+All HTML deliverables must follow these rules for smooth Figma + Webflow compatibility:
+
+### Structure
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[Project Name] — Built by Kadeio</title>
+  <!-- Google Fonts or self-hosted fonts -->
+  <style>
+    /* All styles inline or in <style> block */
+    /* Use CSS custom properties (variables) for all colors, spacing, type */
+  </style>
+</head>
+<body>
+
+  <!-- SECTIONS: clearly commented -->
+  <!-- NAV -->
+  <!-- HERO -->
+  <!-- FEATURES / CONTENT -->
+  <!-- CTA -->
+  <!-- FOOTER -->
+
+  <!-- Built by Kadeio -->
+</body>
+</html>
+```
+
+### CSS Rules
+- All colors defined as CSS variables in `:root`
+- Use `rem` for typography, `px` for borders/shadows
+- No external CSS frameworks (Tailwind, Bootstrap) unless explicitly requested
+- Animations via CSS keyframes or Intersection Observer JS
+
+### GitHub-Ready Formatting
+- Single-file HTML (all CSS/JS inline) unless project is multi-page
+- Clean indentation (2 spaces)
+- Semantic HTML5 elements (`<section>`, `<nav>`, `<article>`, `<footer>`)
+- Comments label every major section
+
+---
+
+## Design System Defaults
+
+These are Kadeio's baseline standards. Override per project based on vibe.
+
+### Typography Approach
+- Always pair a **display/heading font** with a **body font** — never use a single font for both
+- Avoid: Inter, Roboto, Arial, system-ui as primary choices
+- Favor: editorial, characterful, or unexpected pairings
+- Load via Google Fonts CDN in `<head>`
+
+### Color Philosophy
+- Commit to a **dominant palette** (2–3 colors max) + 1 sharp accent
+- Define in `:root` as variables:
+```css
+:root {
+  --color-bg: ;
+  --color-surface: ;
+  --color-primary: ;
+  --color-accent: ;
+  --color-text: ;
+  --color-text-muted: ;
+}
+```
+
+### Spacing System
+```css
+:root {
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 4rem;
+  --space-xl: 8rem;
+}
+```
+
+### Motion Principles
+- Entrance animations: staggered fade/slide on scroll
+- Hover states: always present, never jarring
+- No animation for animation's sake — every motion has purpose
+
+---
+
+## Webflow Handoff Notes
+
+When preparing for Webflow:
+- Structure HTML sections to map 1:1 with Webflow sections/divs
+- Name classes clearly (`.hero-wrapper`, `.nav-link`, `.cta-section`)
+- Avoid deeply nested divs — Webflow builds better with flat-ish structure
+- Flag any interactions that need Webflow Interactions 2.0 vs CSS-only
+
+---
+
+## Kadeio Brand Signature
+
+Every project footer must include:
+
+```html
+<footer>
+  <!-- project footer content -->
+  <p class="kadeio-credit">Built by <a href="#">Kadeio</a></p>
+</footer>
+```
+
+```css
+.kadeio-credit {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.5;
+}
+```
+
+---
+
+## Quick Reference Checklist
+
+Before delivering any project:
+
+- [ ] Vibe and visual inspo confirmed at kickoff
+- [ ] "Built by Kadeio" in footer
+- [ ] CSS variables defined for all colors and spacing
+- [ ] Fonts loaded and paired (display + body)
+- [ ] HTML is single-file and GitHub-ready
+- [ ] Sections clearly commented
+- [ ] Webflow-compatible class naming
+- [ ] Responsive layout (mobile + desktop considered)
+- [ ] Hover states and at least one scroll animation
+
+---
+
+*Kadeio — Designed in Figma. Built in Webflow. Delivered with intention.*
