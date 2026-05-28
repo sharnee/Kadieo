@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>kadieo — We build business ecosystems, not websites.</title>
+  <meta name="description" content="kadieo is a studio that designs the connective tissue between brand, product, and operation. Built in Figma, Webflow, and GitHub." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ============================================
+       DESIGN TOKENS — locked from brand system
+       ============================================ */
+    :root {
+      --color-bg: #ECE7DD;
+      --color-surface: #F4F0E7;
+      --color-ink: #16140F;
+      --color-ink-soft: #2A261D;
+      --color-muted: #8A8474;
+      --color-line: #D4CDBD;
+      --color-accent: #D4E04A;
+
+      --font-display: 'Fraunces', 'Times New Roman', Georgia, serif;
+      --font-body: 'Instrument Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+      --text-xs: 0.75rem;
+      --text-sm: 0.875rem;
+      --text-base: 1rem;
+      --text-md: 1.125rem;
+      --text-lg: 1.375rem;
+      --text-xl: 1.75rem;
+      --text-2xl: 2.5rem;
+      --text-3xl: 3.75rem;
+      --text-4xl: 5.5rem;
+      --text-5xl: 8rem;
+
+      --space-2xs: 0.25rem;
+      --space-xs: 0.5rem;
+      --space-sm: 1rem;
+      --space-md: 2rem;
+      --space-lg: 4rem;
+      --space-xl: 8rem;
+      --space-2xl: 12rem;
+
+      --border-hairline: 1px solid var(--color-line);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--color-bg);
+      color: var(--color-ink);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: 1.55;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img, svg, video { display: block; max-width: 100%; }
+    ::selection { background: var(--color-accent); color: var(--color-ink); }
+
+    /* ============================================
+       LAYOUT PRIMITIVES
+       ============================================ */
+    .container {
+      width: 100%;
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 var(--space-md);
+    }
+
+    .section {
+      padding: var(--space-xl) 0;
+      border-bottom: var(--border-hairline);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: var(--space-lg);
+      padding-bottom: var(--space-sm);
+      border-bottom: var(--border-hairline);
+    }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, var(--text-2xl));
+      font-weight: 400;
+      font-variation-settings: "opsz" 144, "SOFT" 30;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    /* ============================================
+       ANNOUNCEMENT BAR
+       ============================================ */
+    .announcement-bar {
+      background: var(--color-ink);
+      color: var(--color-bg);
+      padding: var(--space-xs) var(--space-md);
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .announcement-bar a {
+      color: var(--color-accent);
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      transition: opacity 0.2s ease;
+    }
+    .announcement-bar a:hover { opacity: 0.8; }
+    .announcement-bar .arrow { transition: transform 0.2s ease; }
+    .announcement-bar a:hover .arrow { transform: translateX(3px); }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(236, 231, 221, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: var(--border-hairline);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-sm) var(--space-md);
+      max-width: 1320px;
+      margin: 0 auto;
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.625rem;
+      font-weight: 500;
+      font-variation-settings: "opsz" 144;
+      letter-spacing: -0.025em;
+      line-height: 1;
+      color: var(--color-ink);
+      display: inline-flex;
+      align-items: baseline;
+      gap: 0;
+    }
+
+    .nav-logo .kadieo-k {
+      color: var(--color-ink);
+      position: relative;
+      display: inline-block;
+    }
+
+    .nav-logo .kadieo-dot {
+      width: 0.32em;
+      height: 0.32em;
+      background: var(--color-accent);
+      border-radius: 50%;
+      display: inline-block;
+      margin-left: 0.05em;
+      transform: translateY(-0.08em);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: var(--space-md);
+      list-style: none;
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      align-items: center;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+    }
+
+    .nav-links a {
+      color: var(--color-ink-soft);
+      transition: color 0.2s ease;
+      position: relative;
+    }
+
+    .nav-links a:hover { color: var(--color-ink); }
+
+    .nav-cta {
+      background: var(--color-ink);
+      color: var(--color-bg);
+      padding: 0.65rem 1.2rem;
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      transition: background 0.2s ease, transform 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+
+    .nav-cta:hover {
+      background: var(--color-ink-soft);
+    }
+
+    .nav-cta .dot {
+      width: 6px;
+      height: 6px;
+      background: var(--color-accent);
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    /* ============================================
+       HERO
+       ============================================ */
+    .hero {
+      position: relative;
+      min-height: calc(100vh - 100px);
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      background: var(--color-ink);
+      color: var(--color-bg);
+      border-bottom: var(--border-hairline);
+    }
+
+    .hero-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+      opacity: 0.35;
+    }
+
+    /* Placeholder gradient that lives behind/with the video — also serves as fallback */
+    .hero-video-placeholder {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse at 20% 30%, rgba(212, 224, 74, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 70%, rgba(212, 205, 189, 0.08) 0%, transparent 50%),
+        linear-gradient(180deg, #0F0D08 0%, #16140F 50%, #1A1812 100%);
+      animation: heroShift 20s ease-in-out infinite alternate;
+    }
+
+    @keyframes heroShift {
+      0% { transform: scale(1) translateX(0); }
+      100% { transform: scale(1.05) translateX(-2%); }
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(180deg, rgba(22,20,15,0.4) 0%, rgba(22,20,15,0.7) 70%, rgba(22,20,15,0.85) 100%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: var(--space-2xl) var(--space-md) var(--space-xl);
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: var(--space-md);
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+    .hero-eyebrow::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: var(--color-accent);
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 9vw, 7rem);
+      font-weight: 300;
+      font-variation-settings: "opsz" 144, "SOFT" 30;
+      line-height: 0.92;
+      letter-spacing: -0.045em;
+      max-width: 16ch;
+      margin-bottom: var(--space-md);
+    }
+
+    .hero-title em {
+      font-style: italic;
+      font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1;
+      color: var(--color-accent);
+    }
+
+    .hero-lede {
+      font-family: var(--font-display);
+      font-size: clamp(1rem, 1.6vw, var(--text-md));
+      font-weight: 300;
+      line-height: 1.5;
+      color: rgba(236, 231, 221, 0.75);
+      max-width: 44ch;
+      margin-bottom: var(--space-lg);
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: var(--space-md);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .hero-cta {
+      background: var(--color-accent);
+      color: var(--color-ink);
+      padding: 0.95rem 1.6rem;
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .hero-cta:hover {
+      background: #B8C33E;
+      transform: translateY(-1px);
+    }
+
+    .hero-cta .arrow { transition: transform 0.2s ease; }
+    .hero-cta:hover .arrow { transform: translateX(3px); }
+
+    .hero-link {
+      color: var(--color-bg);
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      transition: color 0.2s ease;
+      padding: 0.95rem 0;
+    }
+
+    .hero-link:hover { color: var(--color-accent); }
+
+    .hero-meta {
+      position: absolute;
+      bottom: var(--space-md);
+      left: var(--space-md);
+      right: var(--space-md);
+      max-width: 1320px;
+      margin: 0 auto;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(236, 231, 221, 0.45);
+    }
+
+    @media (max-width: 768px) {
+      .hero-meta { display: none; }
+    }
+
+    /* ============================================
+       CAPABILITY MARQUEE
+       ============================================ */
+    .capability-section {
+      padding: var(--space-lg) 0;
+      background: var(--color-bg);
+      border-bottom: var(--border-hairline);
+      overflow: hidden;
+    }
+
+    .capability-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: var(--space-md);
+      padding-left: var(--space-md);
+    }
+
+    .capability-track {
+      display: flex;
+      gap: var(--space-md);
+      animation: marquee 50s linear infinite;
+      width: max-content;
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .capability-chip {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 3.5vw, var(--text-2xl));
+      font-weight: 400;
+      font-variation-settings: "opsz" 144;
+      letter-spacing: -0.025em;
+      color: var(--color-ink-soft);
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+
+    .capability-chip::after {
+      content: '·';
+      color: var(--color-accent);
+      font-size: 2em;
+      line-height: 0.5;
+    }
+
+    /* ============================================
+       PRODUCT OVERVIEW
+       ============================================ */
+    .overview-section {
+      padding: var(--space-2xl) 0 var(--space-xl);
+      background: var(--color-bg);
+      border-bottom: var(--border-hairline);
+    }
+
+    .overview-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+      align-items: end;
+    }
+
+    @media (min-width: 900px) {
+      .overview-grid { grid-template-columns: 2fr 1fr; }
+    }
+
+    .overview-headline {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, var(--text-3xl));
+      font-weight: 300;
+      font-variation-settings: "opsz" 144, "SOFT" 30;
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      max-width: 18ch;
+    }
+
+    .overview-headline strong {
+      font-weight: 400;
+      color: var(--color-ink);
+    }
+
+    .overview-headline em {
+      font-style: italic;
+      font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1;
+    }
+
+    .overview-aside {
+      padding-left: var(--space-md);
+      border-left: 1px solid var(--color-line);
+    }
+
+    .overview-aside-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: var(--space-sm);
+    }
+
+    .overview-aside-text {
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      line-height: 1.6;
+      color: var(--color-ink-soft);
+    }
+
+    /* ============================================
+       SERVICES GRID — the four pillars
+       ============================================ */
+    .services-section {
+      padding: var(--space-xl) 0;
+      background: var(--color-surface);
+      border-bottom: var(--border-hairline);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1px;
+      background: var(--color-line);
+      border: var(--border-hairline);
+    }
+
+    @media (min-width: 700px) {
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .service-card {
+      background: var(--color-surface);
+      padding: var(--space-md);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      min-height: 280px;
+      transition: background 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card:hover {
+      background: var(--color-bg);
+    }
+
+    .service-card-num {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: 0.2em;
+      color: var(--color-muted);
+    }
+
+    .service-card-title {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: 400;
+      font-variation-settings: "opsz" 144;
+      letter-spacing: -0.025em;
+      line-height: 1.05;
+      margin-top: auto;
+    }
+
+    .service-card-title em {
+      font-style: italic;
+      font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1;
+      color: var(--color-ink);
+    }
+
+    .service-card-body {
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      line-height: 1.55;
+      color: var(--color-ink-soft);
+    }
+
+    .service-card-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: 0.05em;
+      color: var(--color-muted);
+      margin-top: var(--space-sm);
+    }
+
+    .service-card-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .service-card-list li::before {
+      content: '—';
+      color: var(--color-accent);
+    }
+
+    /* ============================================
+       PROCESS — Discovery to Handoff
+       ============================================ */
+    .process-section {
+      padding: var(--space-xl) 0;
+      background: var(--color-ink);
+      color: var(--color-bg);
+      border-bottom: var(--border-hairline);
+    }
+
+    .process-section .section-label { color: rgba(236, 231, 221, 0.45); }
+    .process-section .section-title { color: var(--color-bg); }
+    .process-section .section-header { border-bottom-color: rgba(212, 205, 189, 0.15); }
+
+    .process-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1px;
+      background: rgba(212, 205, 189, 0.15);
+      border: 1px solid rgba(212, 205, 189, 0.15);
+    }
+
+    @media (min-width: 800px) {
+      .process-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    .process-step {
+      background: var(--color-ink);
+      padding: var(--space-md);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      min-height: 240px;
+      transition: background 0.3s ease;
+    }
+
+    .process-step:hover {
+      background: var(--color-ink-soft);
+    }
+
+    .process-step-num {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: 0.2em;
+      color: var(--color-accent);
+    }
+
+    .process-step-title {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: 400;
+      font-variation-settings: "opsz" 144;
+      letter-spacing: -0.02em;
+      margin-top: auto;
+    }
+
+    .process-step-body {
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      line-height: 1.55;
+      color: rgba(236, 231, 221, 0.7);
+    }
+
+    /* ============================================
+       STACK
+       ============================================ */
+    .stack-section {
+      padding: var(--space-xl) 0;
+      background: var(--color-bg);
+      border-bottom: var(--border-hairline);
+    }
+
+    .stack-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-md);
+      align-items: end;
+    }
+
+    @media (min-width: 900px) {
+      .stack-grid { grid-template-columns: 1fr 2fr; }
+    }
+
+    .stack-intro {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .stack-headline {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 3.5vw, var(--text-2xl));
+      font-weight: 400;
+      font-variation-settings: "opsz" 144;
+      letter-spacing: -0.025em;
+      line-height: 1;
+      max-width: 14ch;
+    }
+
+    .stack-headline em {
+      font-style: italic;
+      font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1;
+    }
+
+    .stack-body {
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      line-height: 1.55;
+      color: var(--color-ink-soft);
+      max-width: 36ch;
+    }
+
+    .stack-tools {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--color-line);
+      border: var(--border-hairline);
+    }
+
+    @media (min-width: 700px) {
+      .stack-tools { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    .stack-tool {
+      background: var(--color-surface);
+      padding: var(--space-md) var(--space-sm);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-xs);
+      min-height: 160px;
+      transition: background 0.3s ease;
+    }
+
+    .stack-tool:hover {
+      background: var(--color-bg);
+    }
+
+    .stack-tool-name {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: 400;
+      font-variation-settings: "opsz" 144;
+      letter-spacing: -0.02em;
+    }
+
+    .stack-tool-role {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+    }
+
+    /* ============================================
+       FINAL CTA
+       ============================================ */
+    .final-cta-section {
+      padding: var(--space-2xl) 0;
+      background: var(--color-bg);
+      text-align: center;
+      border-bottom: var(--border-hairline);
+    }
+
+    .final-cta-eyebrow {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: var(--space-md);
+    }
+
+    .final-cta-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 7vw, var(--text-4xl));
+      font-weight: 300;
+      font-variation-settings: "opsz" 144, "SOFT" 30;
+      letter-spacing: -0.04em;
+      line-height: 0.95;
+      max-width: 16ch;
+      margin: 0 auto var(--space-lg);
+    }
+
+    .final-cta-title em {
+      font-style: italic;
+      font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1;
+    }
+
+    .final-cta-btn {
+      background: var(--color-ink);
+      color: var(--color-bg);
+      padding: 1.1rem 2rem;
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .final-cta-btn:hover {
+      background: var(--color-ink-soft);
+      transform: translateY(-1px);
+    }
+
+    .final-cta-btn .dot {
+      width: 8px;
+      height: 8px;
+      background: var(--color-accent);
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .final-cta-btn .arrow { transition: transform 0.2s ease; }
+    .final-cta-btn:hover .arrow { transform: translateX(4px); }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--color-ink);
+      color: var(--color-bg);
+      padding: var(--space-xl) 0 var(--space-md);
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+      padding-bottom: var(--space-lg);
+      border-bottom: 1px solid rgba(212, 205, 189, 0.15);
+    }
+
+    @media (min-width: 700px) {
+      .footer-top { grid-template-columns: 2fr repeat(3, 1fr); }
+    }
+
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-weight: 400;
+      font-variation-settings: "opsz" 144;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      color: var(--color-bg);
+      display: inline-flex;
+      align-items: baseline;
+      margin-bottom: var(--space-sm);
+    }
+
+    .footer-logo .kadieo-dot {
+      width: 0.32em;
+      height: 0.32em;
+      background: var(--color-accent);
+      border-radius: 50%;
+      display: inline-block;
+      margin-left: 0.05em;
+      transform: translateY(-0.08em);
+    }
+
+    .footer-tagline {
+      font-family: var(--font-display);
+      font-size: var(--text-md);
+      font-weight: 300;
+      line-height: 1.4;
+      color: rgba(236, 231, 221, 0.7);
+      max-width: 28ch;
+    }
+
+    .footer-tagline em {
+      font-style: italic;
+      font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1;
+      color: var(--color-accent);
+    }
+
+    .footer-column h4 {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(236, 231, 221, 0.45);
+      margin-bottom: var(--space-sm);
+      font-weight: 500;
+    }
+
+    .footer-column ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+
+    .footer-column a {
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      color: rgba(236, 231, 221, 0.85);
+      transition: color 0.2s ease;
+    }
+
+    .footer-column a:hover { color: var(--color-accent); }
+
+    .footer-bottom {
+      padding-top: var(--space-md);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(236, 231, 221, 0.4);
+    }
+
+    .footer-credit a {
+      color: var(--color-accent);
+      transition: opacity 0.2s ease;
+    }
+    .footer-credit a:hover { opacity: 0.7; }
+
+    /* ============================================
+       SCROLL REVEAL
+       ============================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.9s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .reveal.--in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Stagger children */
+    .reveal-stagger > * {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .reveal-stagger.--in > *:nth-child(1) { transition-delay: 0.05s; opacity: 1; transform: translateY(0); }
+    .reveal-stagger.--in > *:nth-child(2) { transition-delay: 0.15s; opacity: 1; transform: translateY(0); }
+    .reveal-stagger.--in > *:nth-child(3) { transition-delay: 0.25s; opacity: 1; transform: translateY(0); }
+    .reveal-stagger.--in > *:nth-child(4) { transition-delay: 0.35s; opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="announcement-bar">
+    <a href="#contact">
+      <span>Now booking Q3 engagements</span>
+      <span class="arrow">→</span>
+    </a>
+  </div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="#" aria-label="kadieo home" class="nav-logo">
+        <span class="kadieo-k">k</span>adieo<span class="kadieo-dot" aria-hidden="true"></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#process">Process</a></li>
+        <li><a href="#stack">Stack</a></li>
+        <li><a href="#about">About</a></li>
+        <li>
+          <a href="#contact" class="nav-cta">
+            <span class="dot"></span>
+            Start a project
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <!-- Video background placeholder. Drop your real loop in src="/videos/hero.mp4" -->
+    <div class="hero-video-placeholder" aria-hidden="true"></div>
+    <video
+      class="hero-video"
+      autoplay
+      loop
+      muted
+      playsinline
+      poster=""
+      aria-hidden="true">
+      <!-- Production: replace with your 30s ambient loop. Example: -->
+      <!-- <source src="/videos/kadieo-hero.mp4" type="video/mp4" /> -->
+      <!-- <source src="/videos/kadieo-hero.webm" type="video/webm" /> -->
+    </video>
+    <div class="hero-overlay" aria-hidden="true"></div>
+
+    <div class="hero-inner">
+      <span class="hero-eyebrow">A studio for the patient</span>
+      <h1 class="hero-title">
+        We build <em>business&nbsp;ecosystems,</em> not&nbsp;websites.
+      </h1>
+      <p class="hero-lede">
+        kadieo designs the connective tissue between brand, product, and operation. A website is one surface. We build the whole system.
+      </p>
+      <div class="hero-actions">
+        <a href="#contact" class="hero-cta">
+          Start a project
+          <span class="arrow">→</span>
+        </a>
+        <a href="#services" class="hero-link">
+          See our services
+          <span class="arrow">↓</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-meta">
+      <span>kadieo · 2026</span>
+      <span>Plano, TX · Remote</span>
+    </div>
+  </header>
+
+  <!-- CAPABILITY MARQUEE -->
+  <section class="capability-section">
+    <div class="capability-label">— What we build</div>
+    <div class="capability-track">
+      <!-- Track 1 -->
+      <span class="capability-chip">Brand systems</span>
+      <span class="capability-chip">Web design</span>
+      <span class="capability-chip">Webflow development</span>
+      <span class="capability-chip">Component libraries</span>
+      <span class="capability-chip">Ops automation</span>
+      <span class="capability-chip">CMS architecture</span>
+      <span class="capability-chip">Design tokens</span>
+      <span class="capability-chip">Internal tools</span>
+      <!-- Duplicate for seamless loop -->
+      <span class="capability-chip">Brand systems</span>
+      <span class="capability-chip">Web design</span>
+      <span class="capability-chip">Webflow development</span>
+      <span class="capability-chip">Component libraries</span>
+      <span class="capability-chip">Ops automation</span>
+      <span class="capability-chip">CMS architecture</span>
+      <span class="capability-chip">Design tokens</span>
+      <span class="capability-chip">Internal tools</span>
+    </div>
+  </section>
+
+  <!-- OVERVIEW -->
+  <section class="overview-section" id="about">
+    <div class="container">
+      <div class="overview-grid">
+        <h2 class="overview-headline">
+          A studio that treats the <em>back office</em> with the same care as the <strong>front&nbsp;page.</strong>
+        </h2>
+        <aside class="overview-aside">
+          <div class="overview-aside-label">— Premise</div>
+          <p class="overview-aside-text">
+            A website is a surface. An ecosystem is everything underneath — how the brand speaks, how the product flows, how the operation scales. We work small, deliberately, and we ship what we design.
+          </p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="section services-section" id="services">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">01 — Services</span>
+        <h2 class="section-title">Four pillars.</h2>
+      </div>
+
+      <div class="services-grid reveal-stagger">
+        <article class="service-card">
+          <span class="service-card-num">01 / Brand</span>
+          <p class="service-card-body">
+            Identity systems built to age well. Wordmarks, palettes, type pairings, and the rules that govern them.
+          </p>
+          <ul class="service-card-list">
+            <li>Visual identity</li>
+            <li>Brand guidelines</li>
+            <li>Voice &amp; messaging</li>
+          </ul>
+          <h3 class="service-card-title">Brand <em>systems.</em></h3>
+        </article>
+
+        <article class="service-card">
+          <span class="service-card-num">02 / Web</span>
+          <p class="service-card-body">
+            Websites designed in Figma, scaffolded in Relume, built in Webflow. Editorial-grade, performance-tuned, easy to update.
+          </p>
+          <ul class="service-card-list">
+            <li>Marketing sites</li>
+            <li>Component libraries</li>
+            <li>CMS architecture</li>
+          </ul>
+          <h3 class="service-card-title">Web <em>design &amp; build.</em></h3>
+        </article>
+
+        <article class="service-card">
+          <span class="service-card-num">03 / Operations</span>
+          <p class="service-card-body">
+            The systems behind the site. Internal tools, workflow automation, dashboards, and the glue between your stack.
+          </p>
+          <ul class="service-card-list">
+            <li>Internal tooling</li>
+            <li>Process automation</li>
+            <li>Data dashboards</li>
+          </ul>
+          <h3 class="service-card-title">Ops <em>automation.</em></h3>
+        </article>
+
+        <article class="service-card">
+          <span class="service-card-num">04 / Content</span>
+          <p class="service-card-body">
+            Editorial systems for teams who publish often. CMS schemas, content models, and the templates that make writing fast.
+          </p>
+          <ul class="service-card-list">
+            <li>Content modeling</li>
+            <li>Editorial templates</li>
+            <li>CMS training</li>
+          </ul>
+          <h3 class="service-card-title">Content <em>systems.</em></h3>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="section process-section" id="process">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">02 — Process</span>
+        <h2 class="section-title">How we work.</h2>
+      </div>
+
+      <div class="process-grid reveal-stagger">
+        <article class="process-step">
+          <span class="process-step-num">01 / Discovery</span>
+          <p class="process-step-body">
+            Two weeks of listening. We map your operation, audit what exists, and define the system we're going to build.
+          </p>
+          <h3 class="process-step-title">Discover.</h3>
+        </article>
+
+        <article class="process-step">
+          <span class="process-step-num">02 / Design</span>
+          <p class="process-step-body">
+            Figma. Brand system first, then surfaces. Every decision documented. You see work weekly, not at the end.
+          </p>
+          <h3 class="process-step-title">Design.</h3>
+        </article>
+
+        <article class="process-step">
+          <span class="process-step-num">03 / Build</span>
+          <p class="process-step-body">
+            Relume wireframes into Webflow. Components, CMS, interactions. We build what we designed, not a translation of it.
+          </p>
+          <h3 class="process-step-title">Build.</h3>
+        </article>
+
+        <article class="process-step">
+          <span class="process-step-num">04 / Handoff</span>
+          <p class="process-step-body">
+            Documentation, training, and a system your team can actually own. We leave it better than we found it.
+          </p>
+          <h3 class="process-step-title">Hand off.</h3>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- STACK -->
+  <section class="section stack-section" id="stack">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">03 — Stack</span>
+        <h2 class="section-title">The tools.</h2>
+      </div>
+
+      <div class="stack-grid">
+        <div class="stack-intro">
+          <h3 class="stack-headline">A small <em>kit,</em> used well.</h3>
+          <p class="stack-body">
+            We don't chase tools. These four — Figma, Relume, Webflow, GitHub — cover every project we take on. The discipline is in the system, not the software.
+          </p>
+        </div>
+
+        <div class="stack-tools reveal-stagger">
+          <div class="stack-tool">
+            <span class="stack-tool-name">Figma</span>
+            <span class="stack-tool-role">Design</span>
+          </div>
+          <div class="stack-tool">
+            <span class="stack-tool-name">Relume</span>
+            <span class="stack-tool-role">Wireframes</span>
+          </div>
+          <div class="stack-tool">
+            <span class="stack-tool-name">Webflow</span>
+            <span class="stack-tool-role">Production</span>
+          </div>
+          <div class="stack-tool">
+            <span class="stack-tool-name">GitHub</span>
+            <span class="stack-tool-role">Version control</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final-cta-section" id="contact">
+    <div class="container">
+      <div class="final-cta-eyebrow">— Start a project</div>
+      <h2 class="final-cta-title">
+        Let's build the <em>system.</em>
+      </h2>
+      <a href="mailto:hello@kadieo.com" class="final-cta-btn">
+        <span class="dot"></span>
+        hello@kadieo.com
+        <span class="arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <span class="footer-logo">
+            kadieo<span class="kadieo-dot" aria-hidden="true"></span>
+          </span>
+          <p class="footer-tagline">
+            We build <em>business ecosystems,</em> not websites.
+          </p>
+        </div>
+
+        <div class="footer-column">
+          <h4>Services</h4>
+          <ul>
+            <li><a href="#services">Brand systems</a></li>
+            <li><a href="#services">Web design</a></li>
+            <li><a href="#services">Ops automation</a></li>
+            <li><a href="#services">Content systems</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4>Studio</h4>
+          <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#process">Process</a></li>
+            <li><a href="#stack">Stack</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4>Connect</h4>
+          <ul>
+            <li><a href="mailto:hello@kadieo.com">hello@kadieo.com</a></li>
+            <li><a href="#">LinkedIn</a></li>
+            <li><a href="#">Are.na</a></li>
+            <li><a href="#">Read.cv</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 kadieo. All rights reserved.</span>
+        <span class="footer-credit">Built by <a href="#">Kadeio</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Built by Kadeio -->
+  <script>
+    // Scroll reveal — for sections and staggered grids
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('--in');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -80px 0px' });
+
+    document.querySelectorAll('.section, .reveal-stagger').forEach(el => {
+      observer.observe(el);
+    });
+
+    // Pause marquee on hover for a tactile detail
+    const marquee = document.querySelector('.capability-track');
+    if (marquee) {
+      marquee.addEventListener('mouseenter', () => marquee.style.animationPlayState = 'paused');
+      marquee.addEventListener('mouseleave', () => marquee.style.animationPlayState = 'running');
+    }
+  </script>
+</body>
+</html>
